@@ -1,0 +1,21 @@
+{
+  "name": "curse-downloader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Pontus Laos",
+  "license": "ISC",
+  "type": "module",
+  "bin": {
+    "curse-downloader": "./bin/index.js"
+  },
+  "dependencies": {
+    "download": "^7.1.0",
+    "node-fetch": "^2.6.0",
+    "yargs": "^13.2.4"
+  }
+}
