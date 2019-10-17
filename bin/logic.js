@@ -1,7 +1,7 @@
 const { search } = require('./get');
 
 function convertToLocalMod(json, version) {
-    const { name, id, summary } = json;
+    const { name, id, summary, websiteUrl } = json;
     const authors = json.authors.map(a => a.name).join(', ');
     const isFabric = json.categories.some(c => c.name === 'Fabric');
     const file = json.gameVersionLatestFiles.find(f => f.gameVersion === version);
@@ -18,6 +18,7 @@ function convertToLocalMod(json, version) {
         name,
         id,
         summary,
+        websiteUrl,
         authors,
         fileId,
         fileName,

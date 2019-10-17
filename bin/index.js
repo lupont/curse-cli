@@ -13,6 +13,7 @@ function logMods(mods) {
     mods.forEach((mod, index) => {
         console.log(`| ${index + 1} | ${mod.name} by ${mod.authors} for ${mod.gameVersion + (mod.isFabric ? ' [FABRIC]' : '')}`);
         console.log(`|   |     ${mod.summary}`);
+        console.log(`|   |     ${mod.websiteUrl}`);
     });
 
     console.log('+---+---------------------');
