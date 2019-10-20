@@ -1,40 +1,15 @@
-const { search } = require('./get');
+const { search } = require('./http');
+const { getConfigObject } = require('./config');
+const { convertToLocalMod } = require('./util');
 
-function convertToLocalMod(json, version) {
-    const { name, id, summary, websiteUrl } = json;
-    const authors = json.authors.map(a => a.name).join(', ');
-    const isFabric = json.categories.some(c => c.name === 'Fabric');
-    const file = json.gameVersionLatestFiles.find(f => f.gameVersion === version);
-
-    if (!file) {
-        return null;
-    }
-
-    const fileId = file.projectFileId;
-    const fileName = file.projectFileName;
-    const gameVersion = file.gameVersion;
-
-    return {
-        name,
-        id,
-        summary,
-        websiteUrl,
-        authors,
-        fileId,
-        fileName,
-        gameVersion,
-        isFabric,
-    };
-}
-
-
- async function getModsFromQuery(query, version, loader, pageSize = 9) {
-    const json = await search(query, pageSize);
+async function getModsFromQuery(query, pageSize) {
+    const json = await search(query, pageSize || 9);
     const mods = [];
+    const configObject = getConfigObject();
 
     for (const obj of json) {
-        const mod = convertToLocalMod(obj, version);
-        if (!mod || (loader === 'fabric' && !mod.isFabric) || (loader === 'forge' && mod.isFabric)) {
+        const mod = convertToLocalMod(obj);
+        if (!mod || (configObject.loader === 'fabric' && !mod.isFabric) || (configObject.loader === 'forge' && mod.isFabric)) {
             continue;
         }
         mods.push(mod);
@@ -43,4 +18,4 @@ function convertToLocalMod(json, version) {
     return mods;
 }
 
-module.exports = { convertToLocalMod, getModsFromQuery };
+module.exports = { getModsFromQuery };
