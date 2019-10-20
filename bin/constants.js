@@ -1,5 +1,5 @@
 const constants = {
-    app_name: 'curse-downloader',
+    app_name: 'curse',
     app_version: 'v0.0.1',
 };
 
