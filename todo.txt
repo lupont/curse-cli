@@ -1,0 +1,2 @@
+- Make the [FABRIC] appending respect version. Currently a mod that uses fabric for 1.14.4 also shows it for earlier versions that does not use it.
+- Allow installing in certain directories by using flags, e.g. by supplying -v 1.xx.x to the install command.
