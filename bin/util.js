@@ -7,8 +7,13 @@ function getNumberFromUser(min, max, callback) {
         output: process.stdout,
     });
 
-    console.log('==> Select mod index (e.g. 1).');
+    console.log('==> Select mod index (e.g. 1). Hit enter to exit.');
     rl.question('==> ', answer => {
+        if (!answer) {
+            rl.close();
+            return;
+        }
+
         const number = parseInt(answer);
 
         if (!number || (number < min || number >= max)) {
@@ -22,6 +27,9 @@ function getNumberFromUser(min, max, callback) {
     });
 }
 
+/**
+ * Takes a json of a mod from the API and returns an object with attributes necessary for the script. 
+ */
 function convertToLocalMod(json) {
     const { name, id, summary, websiteUrl } = json;
     const authors = json.authors.map(a => a.name).join(', ');

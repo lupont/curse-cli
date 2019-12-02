@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
+
 const { downloadMod } = require('./http');
 const { getModsFromQuery } = require('./logic');
 const { getNumberFromUser } = require('./util');
@@ -102,6 +104,41 @@ function handleSearch() {
         });
 }
 
+function handleList() {
+    const args = process.argv;
+    const argIndex = args.indexOf('-d');
+    const dir = argIndex !== -1 && argIndex < args.length - 1 
+        ? args[argIndex + 1] 
+        : getConfigObject().downloadPath;
+
+    fs.readdir(dir, (error, files) => {
+        if (error) {
+            console.log('Could not list files.');
+            return;
+        }
+
+        files.forEach(file => {
+            // const fullPath = require('path').resolve(file);
+            // if (fs.statSync(fullPath).isFile() && file.endsWith('.jar')) {
+            //     console.log(file);
+            // }
+            // if (file.endsWith('.jar')) {
+            //     console.log(file);
+            // }
+
+            const fullPath = require('path').resolve(file);
+            fs.stat(fullPath, (e, stats) => {
+                if (e) {
+                    console.log('Something went wrong.', e);
+                    return;
+                }
+
+                console.log(stats.isDirectory());
+            });
+        });
+    });
+}
+
 function handleInfo() {
     console.log(`${app_name} ${app_version}`);
 }
@@ -122,15 +159,51 @@ function main() {
     setupConfig();
 
     switch (process.argv[2]) {
-        case 'set-path'         : handleSetPath()         ; break;
-        case 'set-version'      : handleSetVersion()      ; break;
-        case 'set-loader'       : handleSetLoader()       ; break;
-        case 'reset-preferences': handleResetPreferences(); break;
-        case 'get-preferences'  : handleGetPreferences()  ; break;
-        case 'install'          : handleInstall()         ; break;
-        case 'search'           : handleSearch()          ; break;
-        case 'info'             : handleInfo()            ; break;
-        default                 : handleDefault()         ;
+        case 'set-path':
+        case 'p': 
+            handleSetPath(); 
+            break;
+
+        case 'set-version':
+        case 'v': 
+            handleSetVersion(); 
+            break;
+
+        case 'set-loader':
+        case 'l': 
+            handleSetLoader(); 
+            break;
+
+        case 'reset-preferences': 
+            handleResetPreferences(); 
+            break;
+        
+        case 'get-preferences': 
+            handleGetPreferences(); 
+            break;
+
+        case 'install':
+        case 'i': 
+            handleInstall(); 
+            break;
+
+        case 'search':
+        case 's': 
+            handleSearch(); 
+            break;
+
+        case 'list':
+        case 'ls': 
+            handleList(); 
+            break;
+
+        case 'info': 
+            handleInfo(); 
+            break;
+        
+        default: 
+            handleDefault(); 
+            return;
     }
 }
 
