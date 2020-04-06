@@ -9,7 +9,6 @@
   "keywords": [],
   "author": "Pontus Laos",
   "license": "ISC",
-  "type": "module",
   "bin": {
     "curse": "./bin/index.js"
   },

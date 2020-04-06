@@ -43,7 +43,7 @@ function handleSetLoader() {
     const loader = process.argv[3];
 
     if (!['fabric', 'forge', 'both'].includes(loader)) {
-        console.log('set-version requires one of either \'fabric\', \'forge\', or \'both\' as parameter.');
+        console.log(`set-version requires one of either 'fabric', 'forge', or 'both' as parameter.`);
         return;
     }
 
@@ -68,14 +68,16 @@ function handleInstall() {
     }
 
     const pageSize = process.argv[4] && parseInt(process.argv[4]);
+
     getModsFromQuery(process.argv[3], pageSize)
         .then(mods => {
             if (mods && mods.length) {
                 logMods(mods);
 
-                getNumberFromUser(1, mods.length + 1, index => {
+                const [min, max] = [1, mods.length + 1];
+                getNumberFromUser(min, max, index => {
                     downloadMod(mods[index], getConfigObject().downloadPath);
-                });
+                }, () => console.log(`There's nothing to do.`));
             }
             else {
                 console.log('No mods matching your query was found.');

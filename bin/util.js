@@ -1,7 +1,7 @@
 const readline = require('readline');
 const { getConfigObject } = require('./config');
 
-function getNumberFromUser(min, max, callback) {
+function getNumberFromUser(min, max, callback, error) {
     const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout,
@@ -12,7 +12,7 @@ function getNumberFromUser(min, max, callback) {
         const number = parseInt(answer);
 
         if (!number || (number < min || number >= max)) {
-            console.log('Invalid response, sorry!');
+            error(number);
             rl.close();
             return;
         }
